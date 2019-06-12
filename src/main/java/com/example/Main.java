@@ -57,7 +57,7 @@ public class Main {
   String tictoe() {
     return "tictoe/src/index.js";
   }
-
+ 
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
