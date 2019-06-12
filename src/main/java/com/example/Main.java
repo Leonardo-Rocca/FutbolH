@@ -53,6 +53,11 @@ public class Main {
     return "index";
   }
 
+  @RequestMapping("/tictoe")
+  String tictoe() {
+    return "tictoe/src/index.js";
+  }
+
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
