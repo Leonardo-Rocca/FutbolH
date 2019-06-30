@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @SpringBootApplication
 public class PlayersController {
-
+/*
     @RequestMapping("/players")
     @ResponseBody
     List<Player> index() {
@@ -19,5 +19,5 @@ public class PlayersController {
         playersMock.add(new Player("nico",7));
 
         return playersMock;
-    }
+    }*/
 }
