@@ -1,17 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Button from "@material-ui/core/Button";
 import teal from '@material-ui/core/colors/teal';
 import green from '@material-ui/core/colors/lightGreen';
 import {createMuiTheme} from "@material-ui/core";
 import { ThemeProvider } from '@material-ui/styles';
-import ButtonAppBar from "./components/AppBar";
 import Typography from "@material-ui/core/Typography";
-import CheckList from "./components/CheckList";
-import IconButton from "@material-ui/core/IconButton";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow"
-import TeamsList from "./components/TeamsList";
+import MainPanel from './MainPanel';
+
 const theme = createMuiTheme({
     palette: {
         primary: green,
@@ -27,20 +23,7 @@ const theme = createMuiTheme({
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <div className="App">
-                <header className="App-headera">
-                <ButtonAppBar title="Arma tu Team"/>
-                </header>
-                <CheckList />
-                <Button variant="contained" color="primary">
-                    <IconButton edge="start" color="inherit" aria-label="Generar">
-                        <PlayArrowIcon />
-                    </IconButton>
-                    Generar
-                </Button>
-
-                <TeamsList/>
-            </div>
+            <MainPanel />
         </ThemeProvider>
     );
 }
