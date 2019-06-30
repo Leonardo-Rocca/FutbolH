@@ -12,7 +12,12 @@ public class PlayersController {
 
     @RequestMapping("/players")
     @ResponseBody
-    String index() {
-        return new Player("leo").getName();
+    List<Player> index() {
+        List<Player> playersMock = new ArrayList();
+        playersMock.add(new Player("leo",10));
+        playersMock.add(new Player("facu",9));
+        playersMock.add(new Player("nico",7));
+
+        return playersMock;
     }
 }
