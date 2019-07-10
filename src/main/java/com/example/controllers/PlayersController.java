@@ -6,10 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @SpringBootApplication
 public class PlayersController {
-/*
+
     @RequestMapping("/players")
     @ResponseBody
     List<Player> index() {
@@ -19,5 +22,5 @@ public class PlayersController {
         playersMock.add(new Player("nico",7));
 
         return playersMock;
-    }*/
+    }
 }
