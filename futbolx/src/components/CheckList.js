@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CheckList() {
+export default function CheckList(props) {
     const classes = useStyles();
     const [checked, setChecked] = React.useState([0]);
 
@@ -37,7 +37,7 @@ export default function CheckList() {
 
     return (
         <List className={classes.root}>
-            {[0, 1, 2, 3].map(value => {
+            {props.players.map(value => {
                 const labelId = `checkbox-list-label-${value}`;
 
                 return (

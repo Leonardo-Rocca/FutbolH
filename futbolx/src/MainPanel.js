@@ -9,13 +9,15 @@ import Box from "@material-ui/core/Box";
 
 class MainPanel extends React.Component {
     render() {
+
+        var jugadores = [0, 1, 2, 3,5,6,7,8];
         return (
             <div className="App">
                 <header className="App-header-a">
                     <ButtonAppBar title="Arma tu Team"/>
                 </header>
                 <Box ml={4} mr={4}>
-                    <CheckList/>
+                    <CheckList players={jugadores}/>
 
                     <Button variant="contained" color="primary">
                         <IconButton edge="start" color="inherit" aria-label="Generar">

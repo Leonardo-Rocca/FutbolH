@@ -10,8 +10,15 @@ import MainPanel from './MainPanel';
 
 const theme = createMuiTheme({
     palette: {
-        primary: green,
-        secondary: teal,
+        /*primary: {
+            main: '#aeea00',// green
+            contrastText: '#ffffff',
+        },*/
+        primary:green,
+        secondary: {
+            main: '#00685b',// teal
+            contrastText: '#ffffff',
+        },
         type: 'dark',
         contrastText: '#ffcc00',
     },
