@@ -20,7 +20,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function CheckList(props) {
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([0]);
+  //  const [checked, setChecked] = React.useState([0]);
+
+    const checked = props.checked;
+    const handleToggle = props.handleToggle;
+   /* const setChecked = props.setChecked;
 
     const handleToggle = value => () => {
         const currentIndex = checked.indexOf(value);
@@ -34,24 +38,30 @@ export default function CheckList(props) {
 
         setChecked(newChecked);
     };
+*/
+    function isChecked(value) {
+        return checked.indexOf(value) !== -1;
+    }
 
     return (
         <List className={classes.root}>
             {props.players.map(value => {
-                const labelId = `checkbox-list-label-${value}`;
+                let playerName = value.player.name;
+                playerName = playerName.size<2?playerName:playerName.charAt(0).toUpperCase() + playerName.slice(1);
+                const labelId = `checkbox-list-label-${playerName}`;
 
                 return (
-                    <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
+                    <ListItem key={playerName} role={undefined} dense button onClick={() => handleToggle(value)}>
                         <ListItemIcon>
                             <Checkbox
                                 edge="start"
-                                checked={checked.indexOf(value) !== -1}
+                                checked={isChecked(value)}
                                 tabIndex={-1}
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                             />
                         </ListItemIcon>
-                        <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                        <ListItemText id={labelId} primary={` ${playerName}`} />
                         <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="Comments">
                                 <Edit color="secondary"/>

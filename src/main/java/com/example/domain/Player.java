@@ -1,13 +1,20 @@
 package com.example.domain;
 
 public class Player {
-    private final String name;
+    private String name;
+    private Double ability;
 
-    public Player(String name, int hability){
-        this.name= name;
+    public Player(String name, Double ability) {
+        this.name = name;
+        this.ability = ability;
     }
 
     public String getName() {
         return name;
     }
+
+    public Double getAbility() {
+        return ability;
+    }
+
 }
