@@ -15,12 +15,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function PlusButton() {
+export default function PlusButton(props) {
     const classes = useStyles();
 
     return (
         <div>
-            <Fab color="primary" aria-label="Add" className={classes.fab}>
+            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={props.onClick}>
                 <AddIcon />
             </Fab>
         </div>

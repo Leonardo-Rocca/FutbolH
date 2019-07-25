@@ -17,10 +17,11 @@ const theme = createMuiTheme({
         primary:green,
         secondary: {
             main: '#00685b',// teal
-            contrastText: '#ffffff',
+          //  contrastText: '#ffffff',
         },
        // type: 'dark',
-        contrastText: '#ffcc00',
+      //  contrastText: '#ffcc00',
+        contrastThreshold: 3,
     },
     status: {
         danger: 'orange',

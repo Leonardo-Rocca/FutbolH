@@ -7,21 +7,19 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import TeamsList from "./components/TeamsList";
 import Box from "@material-ui/core/Box";
 import PlayersClient from './PlayersClient';
-import AddPlayerComponent from "./components/AddPlayerComponent";
-import TextField from "@material-ui/core/TextField";
+import AddPlayerPanel from "./components/AddPlayerPanel";
+import Icon from "@material-ui/core/Icon";
 
 class MainPanel extends React.Component {
-    //  const [checked, setChecked] = React.useState([0]);
 
     constructor(props) {
         super(props);
         this.state = {
             data: [],
             playersCheckList: [],
-            checked:[0]
+            checked: [],
+            teams:[]
         };
-
-
     }
 
     getAll = () => {
@@ -36,42 +34,61 @@ class MainPanel extends React.Component {
                     }
                 })
             }));
-        console.log(2);
     }
 
     componentDidMount() {
         this.getAll();
     }
 
-      handleToggle(value) {
-          let checked = this.state.checked;
-
-          const currentIndex = checked.indexOf(value);
+    handleToggle(value) {
+        let checked = this.state.checked;
+    console.log(value)
+        const currentIndex = checked.indexOf(value.player);
         const newChecked = [...checked];
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(value.player);
         } else {
             newChecked.splice(currentIndex, 1);
         }
 
-        let newState= {...this.state};
-        newState.checked=newChecked;
+        let newState = {...this.state};
+        newState.checked = newChecked;
         this.setState(newState)
     }
 
+    handleAdd(player){
 
-        render(){
-            console.log(this.state.playersCheckList)
-          //  var jugadores = [0, 1, 2, 3,5,6,7,8];
-            let jugadores = this.state.playersCheckList;
+        let newState = {...this.state};
+        let newPlchkList =newState.playersCheckList.slice(0);
+        newPlchkList.push({player:player,checked:false})
 
-            let checked = this.state.checked;
+        newState.playersCheckList =newPlchkList;
+        this.setState(newState)
+    }
 
+     generateTeams() {
 
-        function generateTeams() {
-            console.log({checked});
-        }
+         let teams = [];
+         let checkedPlayers = this.state.checked;
+         checkedPlayers.sort(function() {
+             return .5 - Math.random();
+         });
+         let tsize=Math.trunc(checkedPlayers.length/2);
+         let team1 = checkedPlayers.slice(0,tsize);
+         let team2 = checkedPlayers.slice(tsize);
+         teams.push(team1);
+         teams.push(team2);
+         this.setState({...this.state,teams: teams})
+         console.log(this.state)
+     }
+
+    render() {
+
+        let jugadores = this.state.playersCheckList;
+        let checked = this.state.checked;
+        let teams = this.state.teams;
+
 
         return (
             <div className="App">
@@ -80,21 +97,22 @@ class MainPanel extends React.Component {
                 </header>
                 <Box ml={4} mr={4}>
 
-                    <AddPlayerComponent />
+                    <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)}/>
 
-                    <CheckList players={jugadores} checked={checked} handleToggle={(v)=>this.handleToggle.bind(this)(v)}/>
+                    <CheckList players={jugadores} checked={checked}
+                               handleToggle={(v) => this.handleToggle.bind(this)(v)}/>
 
-                    <Button variant="contained" color="primary" onClick={generateTeams}>
+                    <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)}>
                         <Box>
-                        <IconButton edge="start" color="inherit" aria-label="Generar">
-                            <PlayArrowIcon/>
-                        </IconButton>
+                            <Icon className="play-arrow" edge="start" color="inherit" aria-label="Generar">
+                                <PlayArrowIcon/>
+                            </Icon>
                         </Box>
-                            Generar
+                        Generar
                     </Button>
 
                     <Box justifyContent="center" display="flex" ml={4} mr={4}>
-                        <TeamsList/>
+                        <TeamsList teams={teams}/>
                     </Box>
                 </Box>
             </div>)

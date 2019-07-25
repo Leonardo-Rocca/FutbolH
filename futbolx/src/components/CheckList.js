@@ -40,7 +40,7 @@ export default function CheckList(props) {
     };
 */
     function isChecked(value) {
-        return checked.indexOf(value) !== -1;
+        return checked.indexOf(value.player) !== -1;
     }
 
     return (
@@ -63,9 +63,9 @@ export default function CheckList(props) {
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={` ${playerName}`} />
                         <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="Comments">
+{/*                            <IconButton edge="end" aria-label="Comments">
                                 <Edit color="secondary"/>
-                            </IconButton>
+                            </IconButton>*/}
                             <IconButton edge="end" aria-label="Comments">
                                 <Delete color="secondary"/>
                             </IconButton>

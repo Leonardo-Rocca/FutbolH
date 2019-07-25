@@ -33,7 +33,7 @@ export default class AddPlayerComponent extends React.Component {
 
     const [values, setValues] = React.useState({
                                                    name: 'Cat in the Hat',
-                                                   age: '',
+                                                   ability: '',
                                                    multiline: 'Controlled',
                                                    currency: 'EUR',
                                                });
@@ -52,8 +52,8 @@ export default class AddPlayerComponent extends React.Component {
                 <TextField
                     id="standard-number"
                     label="Habilidad"
-                    //   value={values.age}
-                    //   onChange={handleChange('age')}
+                    //   value={values.ability}
+                    //   onChange={handleChange('ability')}
                     type="number"
                     //   className={classes.textField}
                     /*   InputLabelProps={{

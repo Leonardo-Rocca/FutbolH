@@ -23,24 +23,24 @@ const useStyles = makeStyles(theme => ({
     },
     listHeader: {
         backgroundColor:theme.palette.secondary.main,
-        color:'black',
+        color:theme.palette.secondary.contrastText,
        // backgroundColor: theme.palette.background.paper,
     },
 
 }));
 
-export default function TeamsList() {
+export default function TeamsList(props) {
     const classes = useStyles();
 
     return (
         <List className={classes.root} subheader={<li />}>
-            {[0, 1, 2].map(sectionId => (
+            {props.teams.map((aTeam,sectionId) => (
                 <li key={`section-${sectionId}`} className={classes.listSection}>
                     <ul className={classes.ul}>
-                        <ListSubheader color="secondary" className={classes.listHeader}>{`Equipo ${sectionId+1}`}</ListSubheader>
-                        {[0, 1, 2, 3, 4].map(item => (
-                            <ListItem key={`item-${sectionId}-${item}`}>
-                                <ListItemText primary={`Item ${item}`} />
+                        <ListSubheader  className={classes.listHeader}>{`Equipo ${sectionId+1}`}</ListSubheader>
+                        {aTeam.map(item => (
+                            <ListItem key={`${sectionId}-${item.name}`}>
+                                <ListItemText primary={`${item.name}`} />
                             </ListItem>
                         ))}
                     </ul>
