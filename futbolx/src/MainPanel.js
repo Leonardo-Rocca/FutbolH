@@ -7,8 +7,12 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import TeamsList from "./components/TeamsList";
 import Box from "@material-ui/core/Box";
 import PlayersClient from './PlayersClient';
+import generateTeams from './TeamGenerator';
 import AddPlayerPanel from "./components/AddPlayerPanel";
 import Icon from "@material-ui/core/Icon";
+import TextField from "@material-ui/core/TextField";
+import {makeStyles} from "@material-ui/core";
+
 
 class MainPanel extends React.Component {
 
@@ -17,8 +21,8 @@ class MainPanel extends React.Component {
         this.state = {
             data: [],
             playersCheckList: [],
-            checked: [],
-            teams:[]
+            teams:[],
+            teamsNumber:2
         };
     }
 
@@ -40,53 +44,56 @@ class MainPanel extends React.Component {
         this.getAll();
     }
 
+    handleChangeTeamsNumber(event) {
+        this.setState({...this.state,teamsNumber:event.target.value})
+    }
+
+    //hsndleCheck
     handleToggle(value) {
-        let checked = this.state.checked;
-    console.log(value)
-        const currentIndex = checked.indexOf(value.player);
-        const newChecked = [...checked];
+        let players = this.state.playersCheckList.map(i=>i.player);
+        const currentIndex = players.indexOf(value.player);
+        value.checked= !value.checked;
+        const newChecked = [...this.state.playersCheckList];
+        newChecked[currentIndex]=value;
 
-        if (currentIndex === -1) {
-            newChecked.push(value.player);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        let newState = {...this.state};
-        newState.checked = newChecked;
-        this.setState(newState)
+        this.setState({...this.state,playersCheckList:newChecked})
     }
 
     handleAdd(player){
 
-        let newState = {...this.state};
-        let newPlchkList =newState.playersCheckList.slice(0);
+        let newPlchkList =this.state.playersCheckList.slice(0);
         newPlchkList.push({player:player,checked:false})
 
-        newState.playersCheckList =newPlchkList;
-        this.setState(newState)
+        this.setState({...this.state, playersCheckList:newPlchkList})
     }
 
-     generateTeams() {
+    handleDelete(player){
 
-         let teams = [];
-         let checkedPlayers = this.state.checked;
-         checkedPlayers.sort(function() {
-             return .5 - Math.random();
-         });
-         let tsize=Math.trunc(checkedPlayers.length/2);
-         let team1 = checkedPlayers.slice(0,tsize);
-         let team2 = checkedPlayers.slice(tsize);
-         teams.push(team1);
-         teams.push(team2);
-         this.setState({...this.state,teams: teams})
-         console.log(this.state)
-     }
+        let newPlchkList =this.state.playersCheckList.slice(0);
+        newPlchkList.splice(newPlchkList.indexOf(player),1)
+        this.setState({...this.state, playersCheckList:newPlchkList})
+    }
+
+
+
+    generateTeams() {
+
+        let checkedPlayers = this.getSelectedPlayers();
+        checkedPlayers.sort(function() {
+            return .5 - Math.random();
+        });
+        let quantity = this.state.teamsNumber;
+        let teams = generateTeams(checkedPlayers, quantity);
+
+        this.setState({...this.state,teams: teams})
+        console.log(this.state)
+    }
 
     render() {
 
         let jugadores = this.state.playersCheckList;
-        let checked = this.state.checked;
+        let checked = this.getSelectedPlayers();
+
         let teams = this.state.teams;
 
 
@@ -99,8 +106,9 @@ class MainPanel extends React.Component {
 
                     <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)}/>
 
-                    <CheckList players={jugadores} checked={checked}
+                    <CheckList players={jugadores} checked={checked} handleDelete={this.handleDelete.bind(this)}
                                handleToggle={(v) => this.handleToggle.bind(this)(v)}/>
+                    <TeamsNumber teamsNumber={this.state.teamsNumber} handleChange={this.handleChangeTeamsNumber.bind(this)}/>
 
                     <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)}>
                         <Box>
@@ -119,6 +127,34 @@ class MainPanel extends React.Component {
     }
 
 
+    getSelectedPlayers() {
+        return  this.state.playersCheckList.filter(i => i.checked).map(i=>i.player);
+    }
 }
+
+
+
+    function TeamsNumber(props){
+
+        const useStyles = makeStyles(theme => ({
+            textField: {
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+                width: 200,
+            },
+        }));
+        return(
+            <TextField
+                id="teamsNumber" label="Cantidad de Equipos" type="number"
+                value={props.teamsNumber}
+                onChange={props.handleChange}
+                className={useStyles().textField}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                margin="normal"
+            />
+        )
+    }
 
 export default MainPanel;

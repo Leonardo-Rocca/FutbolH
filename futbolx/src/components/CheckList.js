@@ -24,6 +24,7 @@ export default function CheckList(props) {
 
     const checked = props.checked;
     const handleToggle = props.handleToggle;
+    const handleDelete = props.handleDelete;
    /* const setChecked = props.setChecked;
 
     const handleToggle = value => () => {
@@ -40,13 +41,14 @@ export default function CheckList(props) {
     };
 */
     function isChecked(value) {
-        return checked.indexOf(value.player) !== -1;
+        return checked.indexOf(value) !== -1;
     }
 
     return (
         <List className={classes.root}>
             {props.players.map(value => {
                 let playerName = value.player.name;
+                let playerAbility = value.player.ability;
                 playerName = playerName.size<2?playerName:playerName.charAt(0).toUpperCase() + playerName.slice(1);
                 const labelId = `checkbox-list-label-${playerName}`;
 
@@ -55,18 +57,18 @@ export default function CheckList(props) {
                         <ListItemIcon>
                             <Checkbox
                                 edge="start"
-                                checked={isChecked(value)}
+                                checked={isChecked(value.player)}
                                 tabIndex={-1}
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                             />
                         </ListItemIcon>
-                        <ListItemText id={labelId} primary={` ${playerName}`} />
+                        <ListItemText id={labelId} primary={` ${playerName}`} secondary={playerAbility} />
                         <ListItemSecondaryAction>
 {/*                            <IconButton edge="end" aria-label="Comments">
                                 <Edit color="secondary"/>
                             </IconButton>*/}
-                            <IconButton edge="end" aria-label="Comments">
+                            <IconButton edge="end" aria-label="Comments" onClick={()=>handleDelete(value)}>
                                 <Delete color="secondary"/>
                             </IconButton>
                         </ListItemSecondaryAction>
