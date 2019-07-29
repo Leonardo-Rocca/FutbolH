@@ -39,9 +39,13 @@ export default function TextFields(props) {
     let newPlayer={name:values.name,ability:values.ability};
 
     function handelOnClick() {
-        if (values.name == '' || values.ability == '') return;
+        if (isDisabled()) return;
         handleAdd(newPlayer);
         setValues({name:'',ability: '',})
+    }
+
+    function isDisabled() {
+        return values.name == '' || values.ability == ''
     }
 
     return (
@@ -68,7 +72,7 @@ export default function TextFields(props) {
                 margin="normal"
             />
         </form>
-            <PlusButton onClick={handelOnClick} />
+            <PlusButton onClick={handelOnClick} disabled={isDisabled()}/>
         </div>
     );
 }

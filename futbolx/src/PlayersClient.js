@@ -4,7 +4,7 @@ var request = require('request');
 
 export default function  getPlayers(){
     let host = 'http://arma-tu-equipo.herokuapp.com/';
-//    host="http://localhost:5000/"
+    host="http://localhost:5000/"
     return fetch(host+'players', {
             method: 'GET',
             headers: {

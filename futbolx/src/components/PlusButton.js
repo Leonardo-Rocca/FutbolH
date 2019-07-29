@@ -20,7 +20,7 @@ export default function PlusButton(props) {
 
     return (
         <div>
-            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={props.onClick}>
+            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={props.onClick} disabled={props.disabled}>
                 <AddIcon />
             </Fab>
         </div>
