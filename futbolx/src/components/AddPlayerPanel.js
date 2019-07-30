@@ -36,6 +36,7 @@ export default function TextFields(props) {
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
     };
+    
     let newPlayer={name:values.name,ability:values.ability};
 
     function handelOnClick() {
@@ -62,9 +63,10 @@ export default function TextFields(props) {
             <TextField
                 id="standard-number"
                 label="Habilidad"
-                   value={values.ability}
-                   onChange={handleChange('ability')}
+                value={values.ability}
+                onChange={(e)=> {if (e.target.value<100) handleChange('ability')(e)}}
                 type="number"
+
                    className={classes.textField}
                    InputLabelProps={{
                        shrink: true,
