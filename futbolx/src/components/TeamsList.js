@@ -37,8 +37,8 @@ export default function TeamsList(props) {
             {props.teams.map((aTeam,sectionId) => (
                 <li key={`section-${sectionId}`} className={classes.listSection}>
                     <ul className={classes.ul}>
-                        <ListSubheader  className={classes.listHeader}>{`Equipo ${sectionId+1}`}</ListSubheader>
-                        {aTeam.map(item => (
+                        <ListSubheader  className={classes.listHeader}>{`Equipo ${sectionId+1}  - Habilidad ${aTeam.ability()}`}</ListSubheader>
+                        {aTeam.players.map(item => (
                             <ListItem key={`${sectionId}-${item.name}`}>
                                 <ListItemText primary={`${item.name}`} />
                             </ListItem>

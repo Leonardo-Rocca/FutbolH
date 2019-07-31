@@ -7,11 +7,12 @@ import {createMuiTheme} from "@material-ui/core";
 import { ThemeProvider } from '@material-ui/styles';
 import Typography from "@material-ui/core/Typography";
 import MainPanel from './MainPanel';
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const theme = createMuiTheme({
     palette: {
         /*primary: {
-            main: '#aeea00',// green
+            main: '#aeea00',// green #1B5E20
             contrastText: '#ffffff',
         },*/
         primary:green,
@@ -31,6 +32,7 @@ const theme = createMuiTheme({
 function App() {
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <MainPanel />
         </ThemeProvider>
     );

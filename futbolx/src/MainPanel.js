@@ -6,12 +6,15 @@ import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import TeamsList from "./components/TeamsList";
 import Box from "@material-ui/core/Box";
-import PlayersClient from './PlayersClient';
+import PlayersClient from './PlayersClientMock';
 import generateTeams from './TeamGenerator';
 import AddPlayerPanel from "./components/AddPlayerPanel";
 import Icon from "@material-ui/core/Icon";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core";
+import StickyFooter from "./components/Footer";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
 
 class MainPanel extends React.Component {
@@ -34,7 +37,7 @@ class MainPanel extends React.Component {
                 data: data, playersCheckList: data.map(j => {
                     return {
                         player: j,
-                        checked: false
+                        checked: true
                     }
                 })
             }));
@@ -45,7 +48,9 @@ class MainPanel extends React.Component {
     }
 
     handleChangeTeamsNumber(event) {
-        this.setState({...this.state, teamsNumber: event.target.value})
+        let number = event.target.value;
+        if (number=='' || (number<20 &&number>0))
+            this.setState({...this.state, teamsNumber: number})
     }
 
     //hsndleCheck
@@ -99,13 +104,14 @@ class MainPanel extends React.Component {
                     <ButtonAppBar title="Arma tu Team"/>
                 </header>
                 <Box ml={4} mr={4}>
-
+                    {/*<Typography variant="h5" component="h4" gutterBottom>
+                        {'Agregar jugadores'}
+                    </Typography>*/}
                     <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)}/>
 
                     <CheckList players={jugadores} checked={checked} handleDelete={this.handleDelete.bind(this)}
                                handleToggle={(v) => this.handleToggle.bind(this)(v)}/>
-                    <TeamsNumber teamsNumber={this.state.teamsNumber}
-                                 handleChange={this.handleChangeTeamsNumber.bind(this)}/>
+                    <TeamsNumber teamsNumber={this.state.teamsNumber} handleChange={this.handleChangeTeamsNumber.bind(this)}/>
 
                     <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)} href="#teams">
                         <Box>
@@ -116,10 +122,12 @@ class MainPanel extends React.Component {
                         Generar
                     </Button>
 
-                    <Box justifyContent="center" display="flex" ml={4} mr={4} id="teams">
+                    <Box justifyContent="center" display="flex" ml={6} mr={6} id="teams">
                         <TeamsList teams={teams}/>
                     </Box>
                 </Box>
+
+                <StickyFooter/>
             </div>)
     }
 

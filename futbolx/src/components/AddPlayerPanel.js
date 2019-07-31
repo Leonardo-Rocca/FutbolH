@@ -30,14 +30,14 @@ export default function TextFields(props) {
     const classes = useStyles();
     const [values, setValues] = React.useState({
         name: 'Juan',
-        ability: '10',
+        ability: 10.0,
     });
 
     const handleChange = name => event => {
         setValues({ ...values, [name]: event.target.value });
     };
     
-    let newPlayer={name:values.name,ability:values.ability};
+    let newPlayer={name:values.name,ability: parseFloat(values.ability)};
 
     function handelOnClick() {
         if (isDisabled()) return;
