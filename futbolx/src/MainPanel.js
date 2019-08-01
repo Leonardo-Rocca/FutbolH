@@ -6,8 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow"
 import TeamsList from "./components/TeamsList";
 import Box from "@material-ui/core/Box";
-import PlayersClient from './PlayersClientMock';
-import generateTeams from './TeamGenerator';
+import PlayersClient from './model/PlayersClientMock';
+import generateTeams from './model/TeamGenerator';
 import AddPlayerPanel from "./components/AddPlayerPanel";
 import Icon from "@material-ui/core/Icon";
 import TextField from "@material-ui/core/TextField";

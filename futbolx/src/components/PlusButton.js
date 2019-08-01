@@ -9,6 +9,7 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 const useStyles = makeStyles(theme => ({
     fab: {
         margin: theme.spacing(1),
+        backgroundColor:theme.palette.primary.dark,
     },
     extendedIcon: {
         marginRight: theme.spacing(1),
@@ -20,7 +21,7 @@ export default function PlusButton(props) {
 
     return (
         <div>
-            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={props.onClick} disabled={props.disabled}>
+            <Fab type="submit" aria-label="Add" className={classes.fab} onClick={props.onClick} disabled={props.disabled}>
                 <AddIcon />
             </Fab>
         </div>

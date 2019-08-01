@@ -16,11 +16,19 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
+import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import {ThemeProvider} from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         // maxWidth: 360,
+        // backgroundColor: theme.palette.background.paper,
+    },
+    selectedLabel: {
+        width: '100%',
+         paddingTop: 20,
         // backgroundColor: theme.palette.background.paper,
     },
 }));
@@ -52,7 +60,12 @@ export default function CheckList(props) {
 
     return (
         <div>
+            <CssBaseline />
 
+            <Typography variant="h6"  gutterBottom className={classes.selectedLabel}>
+                {'Seleccione los jugadores '}
+            </Typography >
+            <SelectedPlayersLabel playersNumber={checked.length}/>
             <List className={classes.root}>
                 {props.players.map(value => {
                     let playerName = value.player.name;
@@ -95,6 +108,16 @@ export default function CheckList(props) {
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+function SelectedPlayersLabel(props) {
+    let selectedLabel=props.playersNumber+' jugadores seleccionados';
+    const classes = useStyles();
+
+    return (
+        <Typography variant="caption" display="block" gutterBottom className={classes.selectedLabel}>
+        {selectedLabel}
+    </Typography >)
+}
 
 function AlertDialogSlide(props) {
     const {open, setOpen, handleClose, playerToDelete, confirm} = props;

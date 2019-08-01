@@ -32,7 +32,6 @@ const theme = createMuiTheme({
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline />
             <MainPanel />
         </ThemeProvider>
     );

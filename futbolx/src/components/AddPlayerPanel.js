@@ -4,11 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import PlusButton from "./PlusButton";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
+        flexDirection: 'column',
     },
     textField: {
         marginLeft: theme.spacing(1),
@@ -41,6 +43,8 @@ export default function TextFields(props) {
 
     function handelOnClick() {
         if (isDisabled()) return;
+        let playerName1 = newPlayer.name;
+        newPlayer.name = playerName1.size < 2 ? playerName1 : playerName1.charAt(0).toUpperCase() + playerName1.slice(1);
         handleAdd(newPlayer);
         setValues({name:'',ability: '',})
     }
@@ -52,7 +56,11 @@ export default function TextFields(props) {
     return (
         <div>
              <form className={classes.container} noValidate autoComplete="off">
-            <TextField
+                 <Typography variant="h6"  gutterBottom >
+                     {'Agregar Jugadores '}
+                 </Typography >
+
+                 <TextField
                 id="standard-name"
                 label="Nombre"
                   className={classes.textField}
@@ -73,8 +81,8 @@ export default function TextFields(props) {
                    }}
                 margin="normal"
             />
-        </form>
-            <PlusButton onClick={handelOnClick} disabled={isDisabled()}/>
+                 <PlusButton onClick={handelOnClick} disabled={isDisabled()}/>
+             </form>
         </div>
     );
 }

@@ -1,21 +1,20 @@
 ///
 /// Función que calcula la varianza poblacional de una muestra de n valores
 ///
-function DesviacionEstandar(lista)
+export default  function DesviacionEstandar(lista)
 {
     let s = 0;
 
     let aux;
     if (lista != null) {
-        var stringNumbers = lista.split(',');
-        var numbers;
-        var n = stringNumbers.length;
-        var suma1 = 0;
-        var suma2 = 0;
-        var numbers = new Array();
+       // let stringNumbers = lista.split(',');
+        let n = lista.length;
+        let suma1 = 0;
+        let suma2 = 0;
+        let numbers = lista;
 
 // Parseado de la muestra de valores
-        for (let i = 0; i < n; i++) {
+   /*     for (let i = 0; i < n; i++) {
             aux = parseFloat(stringNumbers[i]);
             if (isNaN(aux)) {
                 alert("Se ha detectado algún valor erroneo en la lista.");
@@ -24,7 +23,7 @@ function DesviacionEstandar(lista)
 
             numbers[i] = aux;
         }
-
+*/
 // Calculando sumatorios
         for (let i = 0; i < n; i++) {
             suma1 = suma1 + Math.pow(parseFloat(numbers[i]), 2);
@@ -32,7 +31,8 @@ function DesviacionEstandar(lista)
         }
 
 // Calculando la varianza de población de la muestra
-        s = (suma1 - (Math.pow(suma2, 2) / n)) / n, 2;
+        let ecuacion = suma1 - (Math.pow(suma2, 2) / n);
+        s = ecuacion / n;
 
 // Redondeo con 4 decimales
         s = Math.round(s * Math.pow(10, 4)) / Math.pow(10, 4);
