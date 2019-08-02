@@ -37,7 +37,8 @@ class MainPanel extends React.Component {
                 data: data, playersCheckList: data.map(j => {
                     return {
                         player: j,
-                        checked: true
+                        checked: true,
+                        teamNumber:''
                     }
                 })
             }));
@@ -66,7 +67,7 @@ class MainPanel extends React.Component {
 
     handleAdd(player) {
         let newPlchkList = this.state.playersCheckList.slice(0);
-        newPlchkList.push({player: player, checked: false})
+        newPlchkList.push({player: player, checked: true})
         this.setState({...this.state, playersCheckList: newPlchkList})
     }
 
@@ -104,16 +105,15 @@ class MainPanel extends React.Component {
                     <ButtonAppBar title="Arma tu Team"/>
                 </header>
                 <Box ml={4} mr={4}>
-                    {/*<Typography variant="h5" component="h4" gutterBottom>
-                        {'Agregar jugadores'}
-                    </Typography>*/}
+
                     <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)}/>
 
                     <CheckList players={jugadores} checked={checked} handleDelete={this.handleDelete.bind(this)}
                                handleToggle={(v) => this.handleToggle.bind(this)(v)}/>
                     <TeamsNumber teamsNumber={this.state.teamsNumber} handleChange={this.handleChangeTeamsNumber.bind(this)}/>
 
-                    <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)} href="#teams">
+                    <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)} href="#teams"
+                    disabled={checked.length<1}>
                         <Box>
                             <Icon className="play-arrow" edge="start" color="inherit" aria-label="Generar">
                                 <PlayArrowIcon/>

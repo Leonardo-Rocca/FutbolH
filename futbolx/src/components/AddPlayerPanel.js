@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import PlusButton from "./PlusButton";
 import Typography from "@material-ui/core/Typography";
+import CustomizedSnackbars from "./Snackbar";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -53,6 +54,19 @@ export default function TextFields(props) {
         return values.name == '' || values.ability == ''
     }
 
+
+    const [open, setOpen] = React.useState(false);
+
+    function handleClickSnackBar() {
+        setOpen(true);
+    }
+
+    function handleCloseSnackBar(event, reason) {
+        if (reason === 'clickaway')
+            return;
+        setOpen(false);
+    }
+
     return (
         <div>
              <form className={classes.container} noValidate autoComplete="off">
@@ -81,7 +95,8 @@ export default function TextFields(props) {
                    }}
                 margin="normal"
             />
-                 <PlusButton onClick={handelOnClick} disabled={isDisabled()}/>
+                 <PlusButton onClick={()=>{handelOnClick();handleClickSnackBar()}} disabled={isDisabled()}/>
+                 <CustomizedSnackbars type="success" message="Jugador Agregado!" open={open} handleCloseSnackBar={handleCloseSnackBar} handleClickSnackBar={handleClickSnackBar}/>
              </form>
         </div>
     );

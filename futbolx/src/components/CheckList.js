@@ -19,6 +19,8 @@ import Slide from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {ThemeProvider} from "@material-ui/styles";
+import CustomizedSnackbars from "./Snackbar";
+import TeamSelect from "./NativeSelects";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,6 +60,19 @@ export default function CheckList(props) {
         return checked.indexOf(value) !== -1;
     }
 
+    const [openSnack, setOpenSnack] = React.useState(false);
+
+    function handleClickSnackBar() {
+        setOpenSnack(true);
+    }
+
+    function handleCloseSnackBar(event, reason) {
+        if (reason === 'clickaway')
+            return;
+        setOpenSnack(false);
+    }
+
+    let playersNumber = checked.length;
     return (
         <div>
             <CssBaseline />
@@ -65,7 +80,7 @@ export default function CheckList(props) {
             <Typography variant="h6"  gutterBottom className={classes.selectedLabel}>
                 {'Seleccione los jugadores '}
             </Typography >
-            <SelectedPlayersLabel playersNumber={checked.length}/>
+            <SelectedPlayersLabel playersNumber={playersNumber}/>
             <List className={classes.root}>
                 {props.players.map(value => {
                     let playerName = value.player.name;
@@ -86,7 +101,8 @@ export default function CheckList(props) {
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={` ${playerName}`} secondary={playerAbility}/>
                             <ListItemSecondaryAction>
-                                {/*                            <IconButton edge="end" aria-label="Comments">
+                                {/*  <TeamSelect />
+                                                        <IconButton edge="end" aria-label="Comments">
                                 <Edit color="secondary"/>
                             </IconButton>*/}
                                 <IconButton edge="end" aria-label="delete" onClick={() => handleClickOpen(value)}>
@@ -99,7 +115,9 @@ export default function CheckList(props) {
                 })}
             </List>
             <AlertDialogSlide open={open} setOpen={setOpen} handleClose={handleClose} playerToDelete={playerToDelete}
-                              confirm={handleDelete}/>
+                              confirm={(smth)=>{handleDelete(smth);handleClickSnackBar()}}/>
+            <CustomizedSnackbars type="info" message="Jugador Eliminado!" open={openSnack} handleCloseSnackBar={handleCloseSnackBar} handleClickSnackBar={handleClickSnackBar}/>
+
         </div>
     );
 }
