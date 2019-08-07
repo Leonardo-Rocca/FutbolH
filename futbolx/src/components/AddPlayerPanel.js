@@ -67,6 +67,9 @@ export default function TextFields(props) {
         setOpen(false);
     }
 
+    let error =  props.names.includes(values.name);
+    let errorText = error? 'El nombre ya existe':'';
+
     return (
         <div>
              <form className={classes.container} noValidate autoComplete="off">
@@ -75,7 +78,10 @@ export default function TextFields(props) {
                  </Typography >
 
                  <TextField
-                id="standard-name"
+                     required
+                     error={error}
+                     helperText={errorText}
+                     id="standard-name"
                 label="Nombre"
                   className={classes.textField}
                    value={values.name}

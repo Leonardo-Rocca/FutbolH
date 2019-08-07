@@ -61,6 +61,7 @@ class MainPanel extends React.Component {
     }
 
     handleAdd(player) {
+
         let newPlchkList = this.state.playersCheckList.slice(0);
         newPlchkList.push({player: player, checked: true})
         this.updatePlayersChecklist(newPlchkList);
@@ -106,6 +107,7 @@ class MainPanel extends React.Component {
     };
 
     updatePlayersChecklist(newChecked) {
+        newChecked.sort((a, b) => a.name < b.name ? -1 : 1);
         this.setState({...this.state, playersCheckList: newChecked})
     }
 
@@ -139,7 +141,7 @@ class MainPanel extends React.Component {
                 </header>
                 <Box ml={4} mr={4}>
 
-                    <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)}/>
+                    <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}/>
 
                     <CheckList players={jugadores} checked={checked} handleDelete={this.handleDelete.bind(this)}
                                handleToggle={(v) => this.handleToggle.bind(this)(v)}

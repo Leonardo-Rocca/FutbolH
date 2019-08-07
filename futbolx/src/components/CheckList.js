@@ -93,7 +93,7 @@ export default function CheckList(props) {
                 {'Seleccione los jugadores '}
             </Typography >
 
-            <CardHeader dense
+            <CardHeader
                 className={classes.selectAll}
                 avatar={
             <Checkbox
