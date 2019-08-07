@@ -1,6 +1,12 @@
 import combinations from './CombinationGenerator';
 import desviacionEstandar from './VarianceProvider';
 
+function makeCombinations(checkedPlayers) {
+    let all = checkedPlayers.slice(0);
+    all.reverse();
+    return combinations(all).concat(combinations(checkedPlayers));
+}
+
 export default function generateTeams(checkedPlayers, quantity, teamsSelected = []) {
 
     function generateMatch(players, quantity, teamsSelected) {
@@ -13,7 +19,6 @@ export default function generateTeams(checkedPlayers, quantity, teamsSelected = 
             teams.push(new Team(players.slice(i * tsize, j)));
         }
 
-
         let restantes = players.length % quantity;
         if (restantes != 0)
             teams[0].addPlayers(players.slice(players.length - restantes));
@@ -21,10 +26,13 @@ export default function generateTeams(checkedPlayers, quantity, teamsSelected = 
         return new Match(teams);
     }
 
-    let matches = combinations(checkedPlayers).map(li => generateMatch(li, quantity, teamsSelected))
+
+    // hacemos todas las combinaciones validas y ordenamos por diferencia
+    let matches = makeCombinations(checkedPlayers).map(li => generateMatch(li, quantity, teamsSelected))
+        .filter(match=>match.contains(teamsSelected))
         .sort((a, b) => a.abilityDifference() < b.abilityDifference() ? -1 : 1);
 
-    return matches[0].teams;
+    return matches.length>0?matches[0].teams:[];
 }
 
 
@@ -40,6 +48,14 @@ class Team {
     addPlayers(players) {
         this.players = this.players.concat(players)
     }
+
+    containsAll(aGroup) {
+        if(aGroup && aGroup.length){
+            return aGroup.every((val) => this.players.includes(val))
+        }else{
+            return true;
+        }
+    }
 }
 
 class Match {
@@ -54,4 +70,13 @@ class Match {
     teams() {
         return this.teams;
     }
+
+    contains (teamsSelected) {
+        if(teamsSelected && teamsSelected.length){
+            return teamsSelected.every((aGroup,index) => this.teams[index].containsAll(aGroup));
+        }else{
+            return true;
+        }
+    }
+
 }

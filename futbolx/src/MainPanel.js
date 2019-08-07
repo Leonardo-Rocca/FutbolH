@@ -15,6 +15,7 @@ import {makeStyles} from "@material-ui/core";
 import StickyFooter from "./components/Footer";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Checkbox from "@material-ui/core/Checkbox";
 
 
 class MainPanel extends React.Component {
@@ -38,7 +39,7 @@ class MainPanel extends React.Component {
                     return {
                         player: j,
                         checked: true,
-                        teamNumber:''
+                        teamNumber: 0
                     }
                 })
             }));
@@ -50,42 +51,75 @@ class MainPanel extends React.Component {
 
     handleChangeTeamsNumber(event) {
         let number = event.target.value;
-        if (number=='' || (number<20 &&number>0))
+        if (number == '' || (number < 20 && number > 0))
             this.setState({...this.state, teamsNumber: number})
     }
 
-    //hsndleCheck
-    handleToggle(value) {
-        let players = this.state.playersCheckList.map(i => i.player);
-        const currentIndex = players.indexOf(value.player);
-        value.checked = !value.checked;
-        const newChecked = [...this.state.playersCheckList];
-        newChecked[currentIndex] = value;
-
-        this.setState({...this.state, playersCheckList: newChecked})
+    // ABM
+    getPlayers() {
+        return this.state.playersCheckList.map(i => i.player);
     }
 
     handleAdd(player) {
         let newPlchkList = this.state.playersCheckList.slice(0);
         newPlchkList.push({player: player, checked: true})
-        this.setState({...this.state, playersCheckList: newPlchkList})
+        this.updatePlayersChecklist(newPlchkList);
+
     }
 
     handleDelete(player) {
         let newPlchkList = this.state.playersCheckList.slice(0);
         newPlchkList.splice(newPlchkList.indexOf(player), 1)
-        this.setState({...this.state, playersCheckList: newPlchkList})
+        this.updatePlayersChecklist(newPlchkList);
     }
 
+    // CHECKS
+    //hsndleCheck
+    handleToggle(value) {
+        let players = this.getPlayers();
+        const currentIndex = players.indexOf(value.player);
+        value.checked = !value.checked;
+        const newChecked = [...this.state.playersCheckList];
+        newChecked[currentIndex] = value;
+        this.updatePlayersChecklist(newChecked);
+    }
+
+    handleToggleAll = () => {
+        if (this.getSelectedRecords().length === this.state.playersCheckList.length) {
+            this.setChecked(this.state.playersCheckList.map(r=>{r.checked=false;return r}));
+        } else {
+            this.setChecked(this.state.playersCheckList.map(r=>{r.checked=true;return r}));
+        }
+    }
+    setChecked(items) {
+       this.setState({...this.state, playersCheckList: items})
+    }
+
+    // SELECT TEAM
+    handleTeamSelectionChange = player => event => {
+        const currentIndex = this.getPlayers().indexOf(player);
+        const newChecked = [...this.state.playersCheckList];
+        newChecked[currentIndex].teamNumber = parseInt(event.target.value);
+
+        this.updatePlayersChecklist(newChecked);
+
+    };
+
+    updatePlayersChecklist(newChecked) {
+        this.setState({...this.state, playersCheckList: newChecked})
+    }
 
     generateTeams() {
 
         let checkedPlayers = this.getSelectedPlayers();
-        checkedPlayers.sort(function () {
+        /*checkedPlayers.sort(function () {
             return .5 - Math.random();
-        });
+        });*/
         let quantity = this.state.teamsNumber;
-        let teams = generateTeams(checkedPlayers, quantity);
+        let groups = new Array(quantity).fill(0).map(
+            (v, i) => this.getSelectedRecords().filter(p => p.teamNumber == i + 1).map(p => p.player));
+
+        let teams = generateTeams(checkedPlayers, quantity, groups);
 
         this.setState({...this.state, teams: teams})
         console.log(this.state)
@@ -98,7 +132,6 @@ class MainPanel extends React.Component {
 
         let teams = this.state.teams;
 
-
         return (
             <div className="App">
                 <header className="App-header-a">
@@ -109,11 +142,15 @@ class MainPanel extends React.Component {
                     <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)}/>
 
                     <CheckList players={jugadores} checked={checked} handleDelete={this.handleDelete.bind(this)}
-                               handleToggle={(v) => this.handleToggle.bind(this)(v)}/>
-                    <TeamsNumber teamsNumber={this.state.teamsNumber} handleChange={this.handleChangeTeamsNumber.bind(this)}/>
+                               handleToggle={(v) => this.handleToggle.bind(this)(v)}
+                               handleToggleAll={this.handleToggleAll.bind(this)}
+                               handleTeamSelectionChange={this.handleTeamSelectionChange.bind(this)}/>
+
+                    <TeamsNumber teamsNumber={this.state.teamsNumber}
+                                 handleChange={this.handleChangeTeamsNumber.bind(this)}/>
 
                     <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)} href="#teams"
-                    disabled={checked.length<1}>
+                            disabled={checked.length < 1}>
                         <Box>
                             <Icon className="play-arrow" edge="start" color="inherit" aria-label="Generar">
                                 <PlayArrowIcon/>
@@ -122,9 +159,8 @@ class MainPanel extends React.Component {
                         Generar
                     </Button>
 
-                    <Box justifyContent="center" display="flex" ml={6} mr={6} id="teams">
-                        <TeamsList teams={teams}/>
-                    </Box>
+                     <TeamsList teams={teams}/>
+
                 </Box>
 
                 <StickyFooter/>
@@ -133,7 +169,11 @@ class MainPanel extends React.Component {
 
 
     getSelectedPlayers() {
-        return this.state.playersCheckList.filter(i => i.checked).map(i => i.player);
+        return this.getSelectedRecords().map(i => i.player);
+    }
+
+    getSelectedRecords() {
+        return this.state.playersCheckList.filter(i => i.checked);
     }
 }
 

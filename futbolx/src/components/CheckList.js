@@ -21,6 +21,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import {ThemeProvider} from "@material-ui/styles";
 import CustomizedSnackbars from "./Snackbar";
 import TeamSelect from "./NativeSelects";
+import Box from "@material-ui/core/Box";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
+import Card from "@material-ui/core/Card";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,12 +37,18 @@ const useStyles = makeStyles(theme => ({
          paddingTop: 20,
         // backgroundColor: theme.palette.background.paper,
     },
+    selectAll:{
+        paddingLeft: 4,
+        paddingTop:1,
+    }
 }));
 
 export default function CheckList(props) {
     const classes = useStyles();
 
     const checked = props.checked;
+    let players = props.players;
+
     const handleToggle = props.handleToggle;
     const handleDelete = props.handleDelete;
 
@@ -73,16 +83,34 @@ export default function CheckList(props) {
     }
 
     let playersNumber = checked.length;
+    let totalPlayersNumber = players.length;
     return (
         <div>
+            <Card >
             <CssBaseline />
 
             <Typography variant="h6"  gutterBottom className={classes.selectedLabel}>
                 {'Seleccione los jugadores '}
             </Typography >
+
+            <CardHeader dense
+                className={classes.selectAll}
+                avatar={
+            <Checkbox
+                onClick={props.handleToggleAll}
+                checked={playersNumber === totalPlayersNumber && totalPlayersNumber !== 0}
+                indeterminate={playersNumber !== totalPlayersNumber && playersNumber !== 0}
+                disabled={totalPlayersNumber === 0}
+                inputProps={{ 'aria-label': 'all items selected' }}
+            />
+/*
             <SelectedPlayersLabel playersNumber={playersNumber}/>
-            <List className={classes.root}>
-                {props.players.map(value => {
+*/
+                }
+                title={` ${playersNumber}/${totalPlayersNumber} jugadores seleccionados`}
+            />  <Divider />
+            <List >
+                {players.map(value => {
                     let playerName = value.player.name;
                     let playerAbility = value.player.ability;
                     playerName = playerName.size < 2 ? playerName : playerName.charAt(0).toUpperCase() + playerName.slice(1);
@@ -101,8 +129,8 @@ export default function CheckList(props) {
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={` ${playerName}`} secondary={playerAbility}/>
                             <ListItemSecondaryAction>
-                                {/*  <TeamSelect />
-                                                        <IconButton edge="end" aria-label="Comments">
+                                <TeamSelect playerSelection={value.teamNumber} player={value.player} handleTeamSelectionChange={props.handleTeamSelectionChange}/>
+                                {/*                            <IconButton edge="end" aria-label="Comments">
                                 <Edit color="secondary"/>
                             </IconButton>*/}
                                 <IconButton edge="end" aria-label="delete" onClick={() => handleClickOpen(value)}>
@@ -117,7 +145,7 @@ export default function CheckList(props) {
             <AlertDialogSlide open={open} setOpen={setOpen} handleClose={handleClose} playerToDelete={playerToDelete}
                               confirm={(smth)=>{handleDelete(smth);handleClickSnackBar()}}/>
             <CustomizedSnackbars type="info" message="Jugador Eliminado!" open={openSnack} handleCloseSnackBar={handleCloseSnackBar} handleClickSnackBar={handleClickSnackBar}/>
-
+        </Card>
         </div>
     );
 }

@@ -16,14 +16,14 @@ const useStyles = makeStyles(theme => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
+        minWidth: 12,
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
 }));
 
-    export default function TeamSelect() {
+    export default function TeamSelect(props) {
     const classes = useStyles();
     const [state, setState] = React.useState({
         age: '',
@@ -37,23 +37,17 @@ const useStyles = makeStyles(theme => ({
         setLabelWidth(inputLabel.current.offsetWidth);
     }, []);*/
 
-    const handleChange = name => event => {
-        setState({
-            ...state,
-            [name]: event.target.value,
-        });
-    };
 
     return (
             <FormControl className={classes.formControl}>
                 <NativeSelect
-                    value={state.age}
-                    onChange={handleChange('age')}
+                    value={props.playerSelection}
+                    onChange={props.handleTeamSelectionChange(props.player)}
                     name="age"
                     className={classes.selectEmpty}
                     inputProps={{ 'aria-label': 'age' }}
                 >
-                    <option value="">Sin equipo</option>
+                    <option value={0}>Sin equipo</option>
                     <option value={1}>1</option>
                     <option value={2}>2</option>
                 </NativeSelect>
