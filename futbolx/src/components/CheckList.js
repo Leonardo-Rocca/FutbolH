@@ -25,6 +25,9 @@ import Box from "@material-ui/core/Box";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
+import {Modal} from "@material-ui/core";
+import AddPlayerComponent from "./AddPlayerComponent";
+import AddPlayerPanel from "./AddPlayerPanel";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -129,7 +132,9 @@ export default function CheckList(props) {
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={` ${playerName}`} secondary={playerAbility}/>
                             <ListItemSecondaryAction>
-                                <TeamSelect playerSelection={value.teamNumber} player={value.player} handleTeamSelectionChange={props.handleTeamSelectionChange}/>
+                                <TeamSelect record={value}
+                                            teamsQuantity={props.teamsQuantity}
+                                            handleTeamSelectionChange={props.handleTeamSelectionChange}/>
                                 {/*                            <IconButton edge="end" aria-label="Comments">
                                 <Edit color="secondary"/>
                             </IconButton>*/}
@@ -144,6 +149,7 @@ export default function CheckList(props) {
             </List>
             <AlertDialogSlide open={open} setOpen={setOpen} handleClose={handleClose} playerToDelete={playerToDelete}
                               confirm={(smth)=>{handleDelete(smth);handleClickSnackBar()}}/>
+
             <CustomizedSnackbars type="info" message="Jugador Eliminado!" open={openSnack} handleCloseSnackBar={handleCloseSnackBar} handleClickSnackBar={handleClickSnackBar}/>
         </Card>
         </div>

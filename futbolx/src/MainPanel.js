@@ -51,8 +51,10 @@ class MainPanel extends React.Component {
 
     handleChangeTeamsNumber(event) {
         let number = event.target.value;
-        if (number == '' || (number < 20 && number > 0))
+        if (number == '' || (number < 20 && number > 0)){
+            number= number==''?number:parseInt(number);
             this.setState({...this.state, teamsNumber: number})
+        }
     }
 
     // ABM
@@ -134,6 +136,7 @@ class MainPanel extends React.Component {
 
         let teams = this.state.teams;
 
+        let teamsQuantity = this.state.teamsNumber;
         return (
             <div className="App">
                 <header className="App-header-a">
@@ -143,12 +146,13 @@ class MainPanel extends React.Component {
 
                     <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}/>
 
-                    <CheckList players={jugadores} checked={checked} handleDelete={this.handleDelete.bind(this)}
+                    <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
+                               handleDelete={this.handleDelete.bind(this)}
                                handleToggle={(v) => this.handleToggle.bind(this)(v)}
                                handleToggleAll={this.handleToggleAll.bind(this)}
                                handleTeamSelectionChange={this.handleTeamSelectionChange.bind(this)}/>
 
-                    <TeamsNumber teamsNumber={this.state.teamsNumber}
+                    <TeamsNumber teamsNumber={teamsQuantity}
                                  handleChange={this.handleChangeTeamsNumber.bind(this)}/>
 
                     <Button variant="contained" color="primary" onClick={this.generateTeams.bind(this)} href="#teams"

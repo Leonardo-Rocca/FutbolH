@@ -21,35 +21,36 @@ const useStyles = makeStyles(theme => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    hide:{
+        display:'none',
+    }
 }));
 
     export default function TeamSelect(props) {
+        let playerRecord = props.record;
+
     const classes = useStyles();
-    const [state, setState] = React.useState({
-        age: '',
-        name: 'hai',
-    });
 
-    const inputLabel = React.useRef(null);
-    const [labelWidth, setLabelWidth] = React.useState(0);
+    let teamsNumber = new Array(props.teamsQuantity).fill(0).map((v,i)=>i+1);
+        let formControlClass = playerRecord.checked? classes.formControl:classes.hide;
+        let player = playerRecord.player;
+        let playerSelection = playerRecord.teamNumber;
 
-/*    React.useEffect(() => {
-        setLabelWidth(inputLabel.current.offsetWidth);
-    }, []);*/
-
-
-    return (
-            <FormControl className={classes.formControl}>
+        return (
+            <FormControl className={formControlClass}>
                 <NativeSelect
-                    value={props.playerSelection}
-                    onChange={props.handleTeamSelectionChange(props.player)}
+                    value={playerSelection}
+                    onChange={props.handleTeamSelectionChange(player)}
                     name="age"
                     className={classes.selectEmpty}
                     inputProps={{ 'aria-label': 'age' }}
                 >
                     <option value={0}>Sin equipo</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
+                    {teamsNumber.map((v)=> {
+
+                         return   <option key={player.name+v} value={v}>{v}</option>
+                        }
+                    )}
                 </NativeSelect>
             </FormControl>
 

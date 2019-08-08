@@ -1,11 +1,17 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import PlusButton from "./PlusButton";
 import Typography from "@material-ui/core/Typography";
 import CustomizedSnackbars from "./Snackbar";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
+import Icon from "@material-ui/core/Icon";
+import PlayArrowIcon from "@material-ui/core/SvgIcon/SvgIcon";
+
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -37,21 +43,24 @@ export default function TextFields(props) {
     });
 
     const handleChange = name => event => {
-        setValues({ ...values, [name]: event.target.value });
+        setValues({...values, [name]: event.target.value});
     };
-    
-    let newPlayer={name:values.name,ability: parseFloat(values.ability)};
+
+
+    let error = () => props.names.includes(values.name);
+
+    let newPlayer = {name: values.name, ability: parseFloat(values.ability)};
 
     function handelOnClick() {
         if (isDisabled()) return;
         let playerName1 = newPlayer.name;
         newPlayer.name = playerName1.size < 2 ? playerName1 : playerName1.charAt(0).toUpperCase() + playerName1.slice(1);
         handleAdd(newPlayer);
-        setValues({name:'',ability: '',})
+        setValues({name: '', ability: '',})
     }
 
     function isDisabled() {
-        return values.name == '' || values.ability == ''
+        return values.name == '' || values.ability == '' || error()
     }
 
 
@@ -67,43 +76,57 @@ export default function TextFields(props) {
         setOpen(false);
     }
 
-    let error =  props.names.includes(values.name);
-    let errorText = error? 'El nombre ya existe':'';
+    let errorText = error() ? 'El nombre ya existe' : '';
 
     return (
         <div>
-             <form className={classes.container} noValidate autoComplete="off">
-                 <Typography variant="h6"  gutterBottom >
-                     {'Agregar Jugadores '}
-                 </Typography >
+            <form className={classes.container} noValidate autoComplete="off">
+                <Typography variant="h6" gutterBottom>
+                    {'Agregar Jugadores '}
+                </Typography>
 
-                 <TextField
-                     required
-                     error={error}
-                     helperText={errorText}
-                     id="standard-name"
-                label="Nombre"
-                  className={classes.textField}
-                   value={values.name}
-                  onChange={handleChange('name')}
-                margin="normal"
-            />
-            <TextField
-                id="standard-number"
-                label="Habilidad"
-                value={values.ability}
-                onChange={(e)=> {if (e.target.value<100) handleChange('ability')(e)}}
-                type="number"
+                <TextField
+                    required
+                    error={error()}
+                    helperText={errorText}
+                    id="standard-name"
+                    label="Nombre"
+                    className={classes.textField}
+                    value={values.name}
+                    onChange={handleChange('name')}
+                    margin="normal"
+                />
+                <TextField
+                    id="standard-number"
+                    label="Habilidad"
+                    value={values.ability}
+                    onChange={(e) => {
+                        if (e.target.value < 100) handleChange('ability')(e)
+                    }}
+                    type="number"
 
-                   className={classes.textField}
-                   InputLabelProps={{
-                       shrink: true,
-                   }}
-                margin="normal"
-            />
-                 <PlusButton onClick={()=>{handelOnClick();handleClickSnackBar()}} disabled={isDisabled()}/>
-                 <CustomizedSnackbars type="success" message="Jugador Agregado!" open={open} handleCloseSnackBar={handleCloseSnackBar} handleClickSnackBar={handleClickSnackBar}/>
-             </form>
+                    className={classes.textField}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    margin="normal"
+                />
+                <Box ml={4} mr={4}>
+                    <Button variant="contained" color="primary" onClick={() => {  handelOnClick();
+                    handleClickSnackBar()}}
+                        disabled={isDisabled()}>
+                        <Icon className="play-arrow"  color="inherit" aria-label="Agregar">
+                            <AddIcon/>
+                        </Icon>
+                    Agregar
+                </Button>
+                </Box>
+
+{/*                <PlusButton onClick={() => {handelOnClick(); handleClickSnackBar()}} disabled={isDisabled()}/>*/}
+                <CustomizedSnackbars type="success" message="Jugador Agregado!" open={open}
+                                     handleCloseSnackBar={handleCloseSnackBar}
+                                     handleClickSnackBar={handleClickSnackBar}/>
+            </form>
         </div>
     );
 }
