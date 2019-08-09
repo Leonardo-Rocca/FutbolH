@@ -30,7 +30,7 @@ export default function ButtonAppBar(props) {
 
     const responseFacebook = (response) => {
         console.log(response);
-        setUser(response)
+        setUser(response);
     }
 
     return (
@@ -43,7 +43,6 @@ export default function ButtonAppBar(props) {
                     <Typography edge="start" variant="h6" className={classes.title}>
                         {props.title}
                     </Typography>
-                    <Button color="inherit">Login</Button>
 
                     { user ? <UserScreen user={user}/> :
                         <LoginButton facebookResponse={responseFacebook}/>
