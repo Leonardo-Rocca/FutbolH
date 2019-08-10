@@ -82,9 +82,10 @@ class MainPanel extends React.Component {
         this.updatePlayersChecklist(newPlchkList);
     }
 
-    handleEdit(player) {
-        let newPlchkList = this.state.playersCheckList().slice(0)
-        newPlchkList[this.getPlayers().map(i => i.name).indexOf(player.name)]=player;
+    handleEdit(edited) {
+        let newPlchkList = this.state.playersCheckList.slice(0)
+        newPlchkList[edited.index].player = {name:edited.name,ability:parseFloat(edited.ability)};
+        console.log(newPlchkList)
         this.updatePlayersChecklist(newPlchkList);
     }
 
@@ -167,6 +168,7 @@ class MainPanel extends React.Component {
                     }}/>
 
                     <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
+                               handleEdit={this.handleEdit.bind(this)}
                                handleDelete={this.handleDelete.bind(this)}
                                handleToggle={(v) => this.handleToggle.bind(this)(v)}
                                handleToggleAll={this.handleToggleAll.bind(this)}

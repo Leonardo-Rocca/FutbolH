@@ -17,7 +17,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 
 const useStyles = makeStyles(theme => ({
     container: {
-        margin: theme.spacing(1),
+     //   margin: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
     },
     form:{
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 }));
 export function AddPlayerPanel(props) {
     const [values, setValues] = React.useState(props.player);
-
+    console.log('addpanel')
     return GeneralPanel({...props,player:values,setPlayer:setValues})
 }
 
@@ -91,7 +91,7 @@ export default function GeneralPanel(props) {
 
     let errorText = error() ? 'El nombre ya existe' : '';
 
-    let selectedPlayer= typeof props.player !== 'undefined' ? props.player: values;
+    //let selectedPlayer= typeof props.player !== 'undefined' ? props.player: values;
 
     return (
         <div className={classes.container}>

@@ -59,20 +59,22 @@ export default function CheckList(props) {
     const handleToggle = props.handleToggle;
     const handleDelete = props.handleDelete;
 
+
     const [open, setOpen] = React.useState(false);
     const [modalOpen, setModalOpen] = React.useState(false);
     const [playerToDelete, setPlayerToDelete] = React.useState({player: {name: 'ds'}});
-    const [playerToEdit, setPlayerToEdit] = React.useState({player: {name: 'ed'}});
+    const [playerToEdit, setPlayerToEdit] = React.useState({name: 'ed',ability:0.0,index:-1});
 
     function handleClickOpen(value) {
         setOpen(true);
-        console.log(value)
         setPlayerToDelete(value)
     }
 
     function handleClickEdit(value) {
         setModalOpen(true);
-        setPlayerToEdit(value)
+        console.log(players.map(p=>p.player.name))
+        setPlayerToEdit({...value,index:players.map(p=>p.player.name).indexOf(value.name)})
+        console.log({...value,index:players.map(p=>p.player.name).indexOf(value)})
     }
 
     function handleClose() {
@@ -99,6 +101,7 @@ export default function CheckList(props) {
     function handleEdit(v) {
         console.log(v);
         setModalOpen(false);
+        props.handleEdit(playerToEdit);
     }
 
     const editPanelContent = {
@@ -157,9 +160,9 @@ export default function CheckList(props) {
                                     <TeamSelect record={value}
                                                 teamsQuantity={props.teamsQuantity}
                                                 handleTeamSelectionChange={props.handleTeamSelectionChange}/>
-                                    {/*<IconButton edge="end" aria-label="Comments" onClick={()=>handleClickEdit(player)}>*/}
-                                    {/*    <Edit color="secondary"/>*/}
-                                    {/*</IconButton>*/}
+                                    <IconButton edge="end" aria-label="Comments" onClick={()=>handleClickEdit(player)}>
+                                        <Edit color="secondary"/>
+                                    </IconButton>
                                     <IconButton edge="end" aria-label="delete" onClick={() => handleClickOpen(value)}>
                                         <Delete color="secondary"/>
                                     </IconButton>
@@ -181,7 +184,7 @@ export default function CheckList(props) {
 
 
                 <EditPanel open={modalOpen} setOpen={setModalOpen} handleEdit={handleEdit}
-                           playerToEdit={playerToEdit} setPlayer={setPlayerToEdit} />
+                           playerToEdit={playerToEdit} setPlayerToEdit={setPlayerToEdit} />
 
                 <CustomizedSnackbars type="info" message="Jugador Eliminado!" open={openSnack}
                                      handleCloseSnackBar={handleCloseSnackBar}
