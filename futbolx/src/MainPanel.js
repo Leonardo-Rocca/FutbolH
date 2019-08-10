@@ -8,7 +8,7 @@ import TeamsList from "./components/TeamsList";
 import Box from "@material-ui/core/Box";
 import PlayersClient from './model/PlayersClientMock';
 import generateTeams from './model/TeamGenerator';
-import AddPlayerPanel from "./components/AddPlayerPanel";
+import {AddPlayerPanel} from "./components/AddPlayerPanel";
 import Icon from "@material-ui/core/Icon";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core";
@@ -16,6 +16,8 @@ import StickyFooter from "./components/Footer";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Checkbox from "@material-ui/core/Checkbox";
+import AddIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import {Add} from "@material-ui/icons";
 
 
 class MainPanel extends React.Component {
@@ -26,13 +28,17 @@ class MainPanel extends React.Component {
             data: [],
             playersCheckList: [],
             teams: [],
-            teamsNumber: 2
+            teamsNumber: 2,
+            userId:null
         };
+    }
+
+    updateUserId(id) {
+        this.setState({...this.state, userId: id})
     }
 
     getAll = () => {
 
-        console.log(1);
         PlayersClient().then(response => this.state.playersCheckList = response.json())
             .then(data => this.setState({
                 data: data, playersCheckList: data.map(j => {
@@ -76,6 +82,12 @@ class MainPanel extends React.Component {
         this.updatePlayersChecklist(newPlchkList);
     }
 
+    handleEdit(player) {
+        let newPlchkList = this.state.playersCheckList().slice(0)
+        newPlchkList[this.getPlayers().map(i => i.name).indexOf(player.name)]=player;
+        this.updatePlayersChecklist(newPlchkList);
+    }
+
     // CHECKS
     //hsndleCheck
     handleToggle(value) {
@@ -116,9 +128,9 @@ class MainPanel extends React.Component {
     generateTeams() {
 
         let checkedPlayers = this.getSelectedPlayers();
-        /*checkedPlayers.sort(function () {
+        checkedPlayers.sort(function () {
             return .5 - Math.random();
-        });*/
+        });
         let quantity = this.state.teamsNumber;
         let groups = new Array(quantity).fill(0).map(
             (v, i) => this.getSelectedRecords().filter(p => p.teamNumber == i + 1).map(p => p.player));
@@ -137,14 +149,22 @@ class MainPanel extends React.Component {
         let teams = this.state.teams;
 
         let teamsQuantity = this.state.teamsNumber;
+
+
+        const addPanelContent = {title:'Agregar Jugadores ',actionLabel:'Agregar',successMsg:"Jugador Agregado!",icon:<Add/>}
+
         return (
             <div className="App">
                 <header className="App-header-a">
-                    <ButtonAppBar title="Arma tu Team"/>
+                    <ButtonAppBar title="Arma tu Equipo" onUpdateUserId={this.updateUserId.bind(this)}/>
                 </header>
                 <Box ml={4} mr={4}>
 
-                    <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}/>
+                    <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}
+                    content={addPanelContent} player={{
+                        name: 'Juan',
+                        ability: 10.0,
+                    }}/>
 
                     <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
                                handleDelete={this.handleDelete.bind(this)}

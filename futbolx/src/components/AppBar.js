@@ -3,11 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import FacebookLoginButton from "./FacebookLoginButton";
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import Delete from "@material-ui/core/SvgIcon/SvgIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import {Person} from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,6 +22,9 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         color:theme.palette.primary.contrastText,
     },
+    userName:{
+        marginRight: theme.spacing(2),
+    },
 }));
 
 export default function ButtonAppBar(props) {
@@ -31,6 +36,7 @@ export default function ButtonAppBar(props) {
     const responseFacebook = (response) => {
         console.log(response);
         setUser(response);
+        props.onUpdateUserId(response.userID);
     }
 
     return (
@@ -54,7 +60,7 @@ export default function ButtonAppBar(props) {
     );
 }
 
-const LoginButton = ({responseFacebook})=>(
+const LoginButton2323 = ({responseFacebook})=>(
     <FacebookLogin
         appId="369937723697248" //APP ID NOT CREATED YET
         fields="name,picture"
@@ -63,10 +69,28 @@ const LoginButton = ({responseFacebook})=>(
     />
 )
 
+function LoginButton(props) {
+    let responseFacebook=props.facebookResponse;
+    const classes = useStyles();
+
+    return (
+        <FacebookLogin
+        appId="369937723697248" //APP ID NOT CREATED YET
+        fields="name,picture"
+        //scope="user_friends"
+        callback={responseFacebook}
+        icon="fa-facebook"
+        render={renderProps => (
+            <IconButton edge="end" aria-label="delete" onClick={renderProps.onClick}>
+                <Person color="secondary"/>
+            </IconButton>
+        )}
+    />)
+}
+
 const UserScreen = ({user}) => (
     <>
-        <h1>Welcome {user.name}!</h1>
-        <p>{ user.email }</p>
+        <h5 className={useStyles().userName}> {user.name}  </h5>
         <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width} alt="avatar"/>
     </>
 )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,13 +12,20 @@ import Icon from "@material-ui/core/Icon";
 import PlayArrowIcon from "@material-ui/core/SvgIcon/SvgIcon";
 
 import AddIcon from '@material-ui/icons/Add';
+import {Card} from "@material-ui/core";
+import CardHeader from "@material-ui/core/CardHeader";
 
 const useStyles = makeStyles(theme => ({
     container: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.background.paper,
+    },
+    form:{
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'column',
-    },
+
+        },
     textField: {
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
@@ -30,22 +37,28 @@ const useStyles = makeStyles(theme => ({
     menu: {
         width: 200,
     },
+    plusBtn:{
+        marginBottom: 5,
+    }
 }));
+export function AddPlayerPanel(props) {
+    const [values, setValues] = React.useState(props.player);
 
-export default function TextFields(props) {
+    return GeneralPanel({...props,player:values,setPlayer:setValues})
+}
 
+export default function GeneralPanel(props) {
+
+    const content = props.content;
     const handleAdd = props.handleAdd;
-
     const classes = useStyles();
-    const [values, setValues] = React.useState({
-        name: 'Juan',
-        ability: 10.0,
-    });
+
+    const values = props.player;
+    const setValues = props.setPlayer;
 
     const handleChange = name => event => {
         setValues({...values, [name]: event.target.value});
     };
-
 
     let error = () => props.names.includes(values.name);
 
@@ -78,12 +91,14 @@ export default function TextFields(props) {
 
     let errorText = error() ? 'El nombre ya existe' : '';
 
+    let selectedPlayer= typeof props.player !== 'undefined' ? props.player: values;
+
     return (
-        <div>
-            <form className={classes.container} noValidate autoComplete="off">
-                <Typography variant="h6" gutterBottom>
-                    {'Agregar Jugadores '}
-                </Typography>
+        <div className={classes.container}>
+            <Card color={"primary"}>
+                <CardHeader title={content.title} />
+
+            <form className={classes.form} noValidate autoComplete="off">
 
                 <TextField
                     required
@@ -101,7 +116,7 @@ export default function TextFields(props) {
                     label="Habilidad"
                     value={values.ability}
                     onChange={(e) => {
-                        if (e.target.value < 100) handleChange('ability')(e)
+                        if (e.target.value < 101) handleChange('ability')(e)
                     }}
                     type="number"
 
@@ -115,18 +130,21 @@ export default function TextFields(props) {
                     <Button variant="contained" color="primary" onClick={() => {  handelOnClick();
                     handleClickSnackBar()}}
                         disabled={isDisabled()}>
-                        <Icon className="play-arrow"  color="inherit" aria-label="Agregar">
-                            <AddIcon/>
+                        <Icon className={classes.plusBtn}  color="inherit" aria-label="OK">
+                            {content.icon}
                         </Icon>
-                    Agregar
+                        {content.actionLabel}
                 </Button>
                 </Box>
 
 {/*                <PlusButton onClick={() => {handelOnClick(); handleClickSnackBar()}} disabled={isDisabled()}/>*/}
-                <CustomizedSnackbars type="success" message="Jugador Agregado!" open={open}
+                <CustomizedSnackbars type="success" message={content.successMsg} open={open}
                                      handleCloseSnackBar={handleCloseSnackBar}
                                      handleClickSnackBar={handleClickSnackBar}/>
+
+                <Box mb={4} />
             </form>
+            </Card>
         </div>
     );
 }
