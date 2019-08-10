@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+document.title = "Arma tu Equipo"
 ReactDOM.render(<App />, document.getElementById('root'));
 
 

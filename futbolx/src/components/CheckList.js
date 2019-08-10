@@ -64,6 +64,8 @@ export default function CheckList(props) {
     const [modalOpen, setModalOpen] = React.useState(false);
     const [playerToDelete, setPlayerToDelete] = React.useState({player: {name: 'ds'}});
     const [playerToEdit, setPlayerToEdit] = React.useState({name: 'ed',ability:0.0,index:-1});
+    const [editedName, setEditedName] = React.useState('');
+
 
     function handleClickOpen(value) {
         setOpen(true);
@@ -72,9 +74,8 @@ export default function CheckList(props) {
 
     function handleClickEdit(value) {
         setModalOpen(true);
-        console.log(players.map(p=>p.player.name))
         setPlayerToEdit({...value,index:players.map(p=>p.player.name).indexOf(value.name)})
-        console.log({...value,index:players.map(p=>p.player.name).indexOf(value)})
+        setEditedName(value.name)
     }
 
     function handleClose() {
@@ -113,6 +114,11 @@ export default function CheckList(props) {
 
     let playersNumber = checked.length;
     let totalPlayersNumber = players.length;
+
+    function unselectedNames() {
+        return players.map(v=>v.player.name).filter(e=>e!==editedName);
+    }
+
     return (
         <div className={classes.panel}>
             <Card>
@@ -183,7 +189,7 @@ export default function CheckList(props) {
 
 
 
-                <EditPanel open={modalOpen} setOpen={setModalOpen} handleEdit={handleEdit}
+                <EditPanel open={modalOpen} setOpen={setModalOpen} handleEdit={handleEdit} forbiddenNames={unselectedNames()}
                            playerToEdit={playerToEdit} setPlayerToEdit={setPlayerToEdit} />
 
                 <CustomizedSnackbars type="info" message="Jugador Eliminado!" open={openSnack}
@@ -252,7 +258,7 @@ function EditPanel(props) {
             aria-labelledby="alert-dialog-slide-title"
             aria-describedby="alert-dialog-slide-description"
         >
-            <GeneralPanel handleAdd={props.handleEdit} names={[]} content={editPanelContent} player={props.playerToEdit}
+            <GeneralPanel handleAdd={props.handleEdit} names={props.forbiddenNames} content={editPanelContent} player={props.playerToEdit}
                           setPlayer={props.setPlayerToEdit}/>
         </Dialog>
     )

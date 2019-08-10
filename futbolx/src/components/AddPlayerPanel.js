@@ -59,8 +59,10 @@ export default function GeneralPanel(props) {
     const handleChange = name => event => {
         setValues({...values, [name]: event.target.value});
     };
+console.log(props.names.map(n=>n.toUpperCase()))
+console.log(values.name.toUpperCase())
 
-    let error = () => props.names.includes(values.name);
+    let error = () => props.names.map(n=>n.toUpperCase()).includes(values.name.toUpperCase());
 
     let newPlayer = {name: values.name, ability: parseFloat(values.ability)};
 
@@ -119,6 +121,7 @@ export default function GeneralPanel(props) {
                         if (e.target.value < 101) handleChange('ability')(e)
                     }}
                     type="number"
+                    placeholder="Puntaje del 1 al 10"
 
                     className={classes.textField}
                     InputLabelProps={{
@@ -127,8 +130,8 @@ export default function GeneralPanel(props) {
                     margin="normal"
                 />
                 <Box ml={4} mr={4}>
-                    <Button variant="contained" color="primary" onClick={() => {  handelOnClick();
-                    handleClickSnackBar()}}
+                    <Button variant="contained" color="primary" type="submit"
+                            onClick={() => {  handelOnClick(); handleClickSnackBar()}}
                         disabled={isDisabled()}>
                         <Icon className={classes.plusBtn}  color="inherit" aria-label="OK">
                             {content.icon}

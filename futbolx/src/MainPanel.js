@@ -163,8 +163,8 @@ class MainPanel extends React.Component {
 
                     <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}
                     content={addPanelContent} player={{
-                        name: 'Juan',
-                        ability: 10.0,
+                        name: '',
+                        ability: '',
                     }}/>
 
                     <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
