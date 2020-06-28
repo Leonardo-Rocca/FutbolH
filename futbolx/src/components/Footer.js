@@ -11,10 +11,10 @@ function MadeWithLove() {
         <div>
 
         <Typography variant="body2" color="inherit">
-            {'Copyright  ©Armá tu equipo 2019'}
+            {'Copyright  ©Armá tu equipo 2020'}
         </Typography>
             <Typography variant="body2" color="inherit">
-                {' Built with ❤ with'}
+                {' Creado por Leonardo R. con ❤ usando'}
                 <Link color="inherit" href="https://material-ui.com/">
                 Material-UI
             </Link>

@@ -18,6 +18,8 @@ import Container from "@material-ui/core/Container";
 import Checkbox from "@material-ui/core/Checkbox";
 import AddIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import {Add} from "@material-ui/icons";
+import Card from "@material-ui/core/Card";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 
 class MainPanel extends React.Component {
@@ -85,7 +87,6 @@ class MainPanel extends React.Component {
     handleEdit(edited) {
         let newPlchkList = this.state.playersCheckList.slice(0)
         newPlchkList[edited.index].player = {name:edited.name,ability:parseFloat(edited.ability)};
-        console.log(newPlchkList)
         this.updatePlayersChecklist(newPlchkList);
     }
 
@@ -139,7 +140,6 @@ class MainPanel extends React.Component {
         let teams = generateTeams(checkedPlayers, quantity, groups);
 
         this.setState({...this.state, teams: teams})
-        console.log(this.state)
     }
 
     render() {
@@ -159,6 +159,10 @@ class MainPanel extends React.Component {
                 <header className="App-header-a">
                     <ButtonAppBar title="Arma tu Equipo" onUpdateUserId={this.updateUserId.bind(this)}/>
                 </header>
+                <CssBaseline/>
+                <Typography variant="subtitle1"  ml={2}>
+                    Crea equipos fácil y rápido
+                </Typography>
                 <Box ml={3} mr={3}>
                     <Box display="flex" flexWrap="wrap" justifyContent="center">
                         <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}
@@ -176,6 +180,8 @@ class MainPanel extends React.Component {
                         </Box>
                     </Box>
 
+                    <br/>
+                    <br/>
                     <TeamsNumber teamsNumber={teamsQuantity}
                                  handleChange={this.handleChangeTeamsNumber.bind(this)}/>
 
@@ -186,7 +192,7 @@ class MainPanel extends React.Component {
                                 <PlayArrowIcon/>
                             </Icon>
                         </Box>
-                        Generar
+                        Generar Equipos
                     </Button>
 
                      <TeamsList teams={teams}/>
