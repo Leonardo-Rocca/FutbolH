@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,6 +10,10 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import Delete from "@material-ui/core/SvgIcon/SvgIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import {Person} from "@material-ui/icons";
+import Modal from "@material-ui/core/Modal";
+import FacebookIcon from '@material-ui/icons/Facebook';
+import {Box, Container, Paper} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,6 +30,16 @@ const useStyles = makeStyles(theme => ({
     userName:{
         marginRight: theme.spacing(2),
     },
+    loginModal:{
+        paddingTop:"10%",
+        paddingLeft:"20%",
+        paddingRight:"20%",
+        outline: 0,
+    } ,
+    loginPaper:{
+    padding:50,
+}
+
 }));
 
 export default function ButtonAppBar(props) {
@@ -39,6 +53,7 @@ export default function ButtonAppBar(props) {
         setUser(response);
         props.onUpdateUserId(response.userID);
     }
+    const [open,setOpen] = useState(false)
 
     return (
         <div className={classes.root}>
@@ -52,10 +67,51 @@ export default function ButtonAppBar(props) {
                     </Typography>
 
                     { user ? <UserScreen user={user}/> :
-                        <LoginButton facebookResponse={responseFacebook}/>
+                        <LoginButton setOpen={setOpen}/>
                     }
                 </Toolbar>
             </AppBar>
+            <Modal
+                className={classes.loginModal}
+                open={open}
+                onClose={()=>setOpen(false)}
+                aria-labelledby="select login mode"
+                aria-describedby="simple-modal-description"
+            >
+                <Box alignContent="center" >
+
+                <Container maxWidth="xs">
+                    <Paper className={classes.loginPaper}>
+                        <Typography edge="start" variant="subtitle1" align="center" >
+                            Ingresá para guardar y acceder a tus listas
+                        </Typography>
+                        <Box alignContent="center" p="100" >
+                        <FacebookLogin
+                    appId="369937723697248" //APP ID NOT CREATED YET
+                    fields="name,picture"
+                    //scope="user_friends"
+                    callback={responseFacebook}
+                    icon="fa-facebook"
+                    render={renderProps => (
+                        <Box alignContent="center" m={1} >
+                        <Button onClick={renderProps.onClick}  variant="contained"
+                                color="primary"
+                                size="medium">
+                        <IconButton edge="end" aria-label="delete"  >
+                            <FacebookIcon color="inherit"/>
+                        </IconButton>
+                                Login
+                        </Button>
+                        </Box>
+                    )}
+                />
+                        </Box>
+
+                        </Paper>
+                </Container>
+
+                </Box>
+            </Modal>
 
         </div>
     );
@@ -70,28 +126,26 @@ const LoginButton2323 = ({responseFacebook})=>(
     />
 )
 
-function LoginButton(props) {
-    let responseFacebook=props.facebookResponse;
-    const classes = useStyles();
+function LoginButton({setOpen}) {
 
-    return (
-        <FacebookLogin
-        appId="369937723697248" //APP ID NOT CREATED YET
-        fields="name,picture"
-        //scope="user_friends"
-        callback={responseFacebook}
-        icon="fa-facebook"
-        render={renderProps => (
-            <IconButton edge="end" aria-label="delete" onClick={renderProps.onClick}>
-                <Person color="secondary"/>
-            </IconButton>
-        )}
-    />)
+    return (<>
+
+        <IconButton edge="end" aria-label="delete" onClick={()=>setOpen(true)}>
+            <Person color="secondary"/>
+        </IconButton>
+    </>)
 }
 
-const UserScreen = ({user}) => (
-    <>
-        <h5 className={useStyles().userName}> {user.name}  </h5>
-        <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width} alt="avatar"/>
-    </>
-)
+const UserScreen = ({user}) => {
+    let picture = user.picture;
+    let styles = useStyles();
+    if (!picture)
+        return <div/>
+
+    return (
+        <>
+            <h5 className={styles.userName}> {user.name}  </h5>
+            <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width} alt="avatar"/>
+        </>
+    );
+}

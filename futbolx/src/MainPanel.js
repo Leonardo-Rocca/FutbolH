@@ -159,20 +159,22 @@ class MainPanel extends React.Component {
                 <header className="App-header-a">
                     <ButtonAppBar title="Arma tu Equipo" onUpdateUserId={this.updateUserId.bind(this)}/>
                 </header>
-                <Box ml={4} mr={4}>
-
-                    <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}
-                    content={addPanelContent} player={{
-                        name: '',
-                        ability: '',
-                    }}/>
-
-                    <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
-                               handleEdit={this.handleEdit.bind(this)}
-                               handleDelete={this.handleDelete.bind(this)}
-                               handleToggle={(v) => this.handleToggle.bind(this)(v)}
-                               handleToggleAll={this.handleToggleAll.bind(this)}
-                               handleTeamSelectionChange={this.handleTeamSelectionChange.bind(this)}/>
+                <Box ml={3} mr={3}>
+                    <Box display="flex" flexWrap="wrap" justifyContent="center">
+                        <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}
+                        content={addPanelContent} player={{
+                            name: '',
+                            ability: '',
+                        }}/>
+                        <Box flexGrow={1} ml={2} mr={2}>
+                        <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
+                                   handleEdit={this.handleEdit.bind(this)}
+                                   handleDelete={this.handleDelete.bind(this)}
+                                   handleToggle={(v) => this.handleToggle.bind(this)(v)}
+                                   handleToggleAll={this.handleToggleAll.bind(this)}
+                                   handleTeamSelectionChange={this.handleTeamSelectionChange.bind(this)}/>
+                        </Box>
+                    </Box>
 
                     <TeamsNumber teamsNumber={teamsQuantity}
                                  handleChange={this.handleChangeTeamsNumber.bind(this)}/>
