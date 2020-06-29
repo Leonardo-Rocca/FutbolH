@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import FacebookLoginButton from "./FacebookLoginButton";
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import FacebookLogin from 'react-facebook-login';
 import Delete from "@material-ui/core/SvgIcon/SvgIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import {Person} from "@material-ui/icons";
@@ -14,6 +14,8 @@ import Modal from "@material-ui/core/Modal";
 import FacebookIcon from '@material-ui/icons/Facebook';
 import {Box, Container, Paper} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import Popper from "@material-ui/core/Popper";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -53,6 +55,15 @@ export default function ButtonAppBar(props) {
         setUser(response);
         props.onUpdateUserId(response.userID);
     }
+    const responseFacebookDummy = () => {
+        let response = {userId:"2123131",picture:{
+                data:{url:"https://arma-tu-equipo.herokuapp.com/favicon.ico"},
+                height:50,
+                width:50
+            }};
+        setUser(response);
+        props.onUpdateUserId(response.userID);
+    }
     const [open,setOpen] = useState(false)
 
     return (
@@ -66,7 +77,7 @@ export default function ButtonAppBar(props) {
                         {props.title}
                     </Typography>
 
-                    { user ? <UserScreen user={user}/> :
+                    { user ? <UserScreen user={user} logOut={()=>setUser(false)}/> :
                         <LoginButton setOpen={setOpen}/>
                     }
                 </Toolbar>
@@ -92,18 +103,18 @@ export default function ButtonAppBar(props) {
                     //scope="user_friends"
                     callback={responseFacebook}
                     icon="fa-facebook"
-                    render={renderProps => (
-                        <Box alignContent="center" m={1} >
-                        <Button onClick={renderProps.onClick}  variant="contained"
-                                color="primary"
-                                size="medium">
-                        <IconButton edge="end" aria-label="delete"  >
-                            <FacebookIcon color="inherit"/>
-                        </IconButton>
-                                Login
-                        </Button>
-                        </Box>
-                    )}
+                  //  render={renderProps => (
+                  //      <Box alignContent="center" m={1} >
+                  //      <Button onClick={renderProps.onClick}  variant="contained"
+                  //              color="inherit"
+                  //              size="medium">
+                  //      <IconButton edge="end" aria-label="delete"  >
+                  //          <FacebookIcon color="inherit"/>
+                  //      </IconButton>
+                  //              Continuar con Facebook
+                  //      </Button>
+                  //      </Box>
+                  //  )}
                 />
                         </Box>
 
@@ -136,16 +147,22 @@ function LoginButton({setOpen}) {
     </>)
 }
 
-const UserScreen = ({user}) => {
+const UserScreen = ({user,logOut}) => {
     let picture = user.picture;
-    let styles = useStyles();
+    let classes = useStyles();
+    const [open,setOpen] = useState(false)
+
     if (!picture)
         return <div/>
 
     return (
         <>
-            <h5 className={styles.userName}> {user.name}  </h5>
-            <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width} alt="avatar"/>
+            <h5 className={classes.userName}> {user.name}  </h5>
+            <Tooltip arrow title={ <div className={classes.paper} onClick={logOut}>
+                <Button variant="contained"              color="primary" >Log out</Button></div>} interactive>
+                <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width} alt="avatar" onClick={()=>setOpen(true)}/>
+            </Tooltip>
+
         </>
     );
 }
