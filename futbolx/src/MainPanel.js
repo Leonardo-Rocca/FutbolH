@@ -155,15 +155,17 @@ class MainPanel extends React.Component {
         const addPanelContent = {title:'Agregar Jugadores ',actionLabel:'Agregar',successMsg:"Jugador Agregado!",icon:<Add/>}
 
         return (
-            <div className="App">
+            <Box className="App" display="flex" flexDirection="column" >
                 <header className="App-header-a">
                     <ButtonAppBar title="Arma tu Equipo" onUpdateUserId={this.updateUserId.bind(this)}/>
                 </header>
-                <CssBaseline/>
-                <Typography variant="subtitle1"  ml={2}>
-                    Crea equipos fácil y rápido
-                </Typography>
-                <Box ml={3} mr={3}>
+
+                <Box ml={3} mr={3} flexGrow={1}>
+                    <CssBaseline/>
+                    <Typography variant="subtitle1"  ml={2}>
+                        Crea equipos fácil y rápido
+                    </Typography>
+
                     <Box display="flex" flexWrap="wrap" justifyContent="center">
                         <AddPlayerPanel handleAdd={(v) => this.handleAdd.bind(this)(v)} names={jugadores.map(i => i.player.name)}
                         content={addPanelContent} player={{
@@ -200,7 +202,7 @@ class MainPanel extends React.Component {
                 </Box>
 
                 <StickyFooter/>
-            </div>)
+            </Box>)
     }
 
 
