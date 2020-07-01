@@ -46,11 +46,7 @@ const useStyles = makeStyles(theme => ({
                     inputProps={{ 'aria-label': 'age' }}
                 >
                     <option value={0}>Sin equipo</option>
-                    {teamsNumber.map((v)=> {
-
-                         return   <option key={player.name+v} value={v}>{v}</option>
-                        }
-                    )}
+                    {teamsNumber.map((v)=>  <option key={player.name+v} value={v}>{v}</option>)}
                 </NativeSelect>
             </FormControl>
 

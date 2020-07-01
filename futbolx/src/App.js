@@ -8,6 +8,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import Typography from "@material-ui/core/Typography";
 import MainPanel from './MainPanel';
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 const theme = createMuiTheme({
     palette: {
@@ -32,9 +33,15 @@ const theme = createMuiTheme({
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <MainPanel />
+            <SnackbarProvider maxSnack={3}>
+                <AppWrapper />
+            </SnackbarProvider>
         </ThemeProvider>
     );
+}
+const AppWrapper = ()=>{
+    const { enqueueSnackbar } = useSnackbar();
+    return  <MainPanel useSnackbar={enqueueSnackbar}/>
 }
 
 export default App;

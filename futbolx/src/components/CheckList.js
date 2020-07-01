@@ -78,20 +78,13 @@ export default function CheckList(props) {
         setEditedName(value.name)
     }
 
-    function handleClose() {
-        setOpen(false);
-    }
+    const handleClose= () =>setOpen(false);
 
-
-    function isChecked(value) {
-        return checked.indexOf(value) !== -1;
-    }
+    const isChecked = (value) => checked.indexOf(value) !== -1
 
     const [openSnack, setOpenSnack] = React.useState(false);
 
-    function handleClickSnackBar() {
-        setOpenSnack(true);
-    }
+    const handleClickSnackBar = () =>        setOpenSnack(true)
 
     function handleCloseSnackBar(event, reason) {
         if (reason === 'clickaway')
@@ -115,9 +108,7 @@ export default function CheckList(props) {
     let playersNumber = checked.length;
     let totalPlayersNumber = players.length;
 
-    function unselectedNames() {
-        return players.map(v=>v.player.name).filter(e=>e!==editedName);
-    }
+    const unselectedNames= () =>   players.map(v=>v.player.name).filter(e=>e!==editedName)
 
     return (
         <div className={classes.panel}>

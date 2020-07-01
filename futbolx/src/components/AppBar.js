@@ -10,6 +10,7 @@ import Modal from "@material-ui/core/Modal";
 import {Box, Container, Paper} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
+import MenuDrawer from "./MenuDrawer";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,32 +34,30 @@ const useStyles = makeStyles(theme => ({
         outline: 0,
     } ,
     loginPaper:{
-    padding:50,
-}
+        padding:theme.spacing(1),
+    }
 
 }));
+const dummyUser = {userId:"2123131",picture:{data:{url:"https://arma-tu-equipo.herokuapp.com/favicon.ico"}, height:50, width:50}};
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
 
 
-    const [user, setUser] = React.useState(false);
+    const [user, setUser] = React.useState(dummyUser);
+    const [open,setOpen] = useState(false)
 
     const responseFacebook = (response) => {
         console.log(response);
         setUser(response);
         props.onUpdateUserId(response.userID);
+        setOpen(false)
     }
     const responseFacebookDummy = () => {
-        let response = {userId:"2123131",picture:{
-                data:{url:"https://arma-tu-equipo.herokuapp.com/favicon.ico"},
-                height:50,
-                width:50
-            }};
+        let response = dummyUser;
         setUser(response);
         props.onUpdateUserId(response.userID);
     }
-    const [open,setOpen] = useState(false)
 
     return (
         <div className={classes.root}>
@@ -71,18 +70,12 @@ export default function ButtonAppBar(props) {
                         {props.title}
                     </Typography>
 
-                    { user ? <UserScreen user={user} logOut={()=>setUser(false)}/> :
-                        <LoginButton setOpen={setOpen}/>
-                    }
+                    { user ? <UserScreen user={user} logOut={()=>setUser(false)} savePlayersLocal={props.savePlayersLocal}/> :
+                   <LoginButton setOpen={setOpen}/>
+                   }
                 </Toolbar>
             </AppBar>
-            <Modal
-                className={classes.loginModal}
-                open={open}
-                onClose={()=>setOpen(false)}
-                aria-labelledby="select login mode"
-                aria-describedby="simple-modal-description"
-            >
+            <Modal className={classes.loginModal} open={open} onClose={()=>setOpen(false)} aria-labelledby="select login mode" aria-describedby="modal-description">
                 <Box alignContent="center" >
 
                 <Container maxWidth="xs">
@@ -96,19 +89,7 @@ export default function ButtonAppBar(props) {
                     fields="name,picture"
                     //scope="user_friends"
                     callback={responseFacebook}
-                    icon="fa-facebook"
-                  //  render={renderProps => (
-                  //      <Box alignContent="center" m={1} >
-                  //      <Button onClick={renderProps.onClick}  variant="contained"
-                  //              color="inherit"
-                  //              size="medium">
-                  //      <IconButton edge="end" aria-label="delete"  >
-                  //          <FacebookIcon color="inherit"/>
-                  //      </IconButton>
-                  //              Continuar con Facebook
-                  //      </Button>
-                  //      </Box>
-                  //  )}
+                    icon="fa-facebook" //  render={renderProps => (//      <Box alignContent="center" m={1} >//      <Button onClick={renderProps.onClick}  variant="contained"//              color="inherit"//              size="medium">//      <IconButton edge="end" aria-label="delete"  >//          <FacebookIcon color="inherit"/>//      </IconButton>//              Continuar con Facebook//      </Button>//      </Box>//  )}
                 />
                         </Box>
 
@@ -141,22 +122,19 @@ function LoginButton({setOpen}) {
     </>)
 }
 
-const UserScreen = ({user,logOut}) => {
+const UserScreen = ({user,logOut,savePlayersLocal}) => {
     let picture = user.picture;
     let classes = useStyles();
-    const [open,setOpen] = useState(false)
-
     if (!picture)
         return <div/>
 
     return (
         <>
             <h5 className={classes.userName}> {user.name}  </h5>
-            <Tooltip arrow title={ <div className={classes.paper} onClick={logOut}>
-                <Button variant="contained"              color="primary" >Log out</Button></div>} interactive>
-                <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width} alt="avatar" onClick={()=>setOpen(true)}/>
-            </Tooltip>
-
+            <MenuDrawer  logOut={logOut} savePlayersLocal={savePlayersLocal} trigger={
+                    <img src={user.picture.data.url} height={user.picture.height} width={user.picture.width}
+                         alt="avatar" />
+            } />
         </>
     );
 }

@@ -42,7 +42,7 @@ export default class AddPlayerComponent extends React.Component {
             <div>
 
                 <TextField
-                    id="standard-name"
+                    id="standard-name-add"
                     label="Nombre"
                     //  className={classes.textField}
                     //   value={values.name}
@@ -50,7 +50,7 @@ export default class AddPlayerComponent extends React.Component {
                     margin="normal"
                 />
                 <TextField
-                    id="standard-number"
+                    id="standard-number-add"
                     label="Habilidad"
                     //   value={values.ability}
                     //   onChange={handleChange('ability')}

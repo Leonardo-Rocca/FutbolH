@@ -26,6 +26,7 @@ class MainPanel extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             data: [],
             playersCheckList: [],
@@ -50,11 +51,17 @@ class MainPanel extends React.Component {
                         teamNumber: 0
                     }
                 })
-            }));
+            })).then(()=>{
+            let localPlayers = localStorage.getItem("players");
+            if (localPlayers)
+                this.setState({playersCheckList: JSON.parse(localPlayers) })
+            }
+        )
     }
 
     componentDidMount() {
         this.getAll();
+
     }
 
     handleChangeTeamsNumber(event) {
@@ -151,16 +158,20 @@ class MainPanel extends React.Component {
 
         let teamsQuantity = this.state.teamsNumber;
 
-
         const addPanelContent = {title:'Agregar Jugadores ',actionLabel:'Agregar',successMsg:"Jugador Agregado!",icon:<Add/>}
 
+        const savePlayersLocal = ()=>{
+            localStorage.setItem("players",JSON.stringify(jugadores));
+            this.props.useSnackbar("Jugadores guardados localmente")
+        }
+
         return (
-            <Box className="App" display="flex" flexDirection="column" >
+            <Box className="App" display="flex" flexDirection="column"   minHeight={'100vh'}>
                 <header className="App-header-a">
-                    <ButtonAppBar title="Arma tu Equipo" onUpdateUserId={this.updateUserId.bind(this)}/>
+                    <ButtonAppBar title="Arma tu Equipo" onUpdateUserId={this.updateUserId.bind(this)} savePlayersLocal={savePlayersLocal}/>
                 </header>
 
-                <Box ml={3} mr={3} flexGrow={1}>
+                <Box ml={3} mr={3} flexGrow={1} >
                     <CssBaseline/>
                     <Typography variant="subtitle1"  ml={2}>
                         Crea equipos fácil y rápido
@@ -172,7 +183,7 @@ class MainPanel extends React.Component {
                             name: '',
                             ability: '',
                         }}/>
-                        <Box flexGrow={1} ml={2} mr={2}>
+                        <Box flexGrow={1} ml={1} mr={1}>
                         <CheckList players={jugadores} checked={checked} teamsQuantity={teamsQuantity}
                                    handleEdit={this.handleEdit.bind(this)}
                                    handleDelete={this.handleDelete.bind(this)}
