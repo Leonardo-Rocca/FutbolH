@@ -43,8 +43,7 @@ const dummyUser = {userId:"2123131",picture:{data:{url:"https://arma-tu-equipo.h
 export default function ButtonAppBar(props) {
     const classes = useStyles();
 
-
-    const [user, setUser] = React.useState(dummyUser);
+    const [user, setUser] = React.useState(false);
     const [open,setOpen] = useState(false)
 
     const responseFacebook = (response) => {
