@@ -132,6 +132,8 @@ class MainPanel extends React.Component {
     updatePlayersChecklist(newChecked) {
         newChecked.sort((a, b) => a.name < b.name ? -1 : 1);
         this.setState({...this.state, playersCheckList: newChecked})
+        localStorage.setItem("players",JSON.stringify(newChecked));
+
     }
 
     generateTeams() {

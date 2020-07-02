@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
      //   margin: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
         paddingTop: theme.spacing(1),
-
+        minWidth: 280,
     },
     form:{
         display: 'flex',
